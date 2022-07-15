@@ -19,7 +19,7 @@ const plugins = () => {
   base.push(
     new webpack.DefinePlugin({
       APP_NAME: "'Selltech test task'",
-      API_HOST: "'http://152.228.215.94:81/api'",
+      API_HOST: "'api'",
       API_AUTHORIZE_ULR: "'http://152.228.215.94:81/auth/login'"
     }),
     new HtmlWebpackPlugin({
@@ -149,13 +149,24 @@ module.exports = (env, args) => {
       chunkFilename: 'scripts/[name].bundle.js',
       publicPath: '/',
     },
+    
     plugins: plugins(),
     devServer: {
       static: path.resolve(__dirname, 'build'),
-      historyApiFallback: true,
       compress: true,
       port: 3000,
-      hot: true
+      hot: true,
+      historyApiFallback: true,
+      proxy: {
+        '/api': {
+          target: 'http://152.228.215.94:81',
+          secure: false,
+          changeOrigin: true,
+          onProxyReq: proxyReq => {
+            console.log(proxyReq);
+          }
+        }
+      }
     },
     module: {
       rules: [
@@ -200,6 +211,7 @@ module.exports = (env, args) => {
       plugins: [new TsconfigPathsPlugin()],
       extensions: ['.tsx', '.ts', '.js', '.jsx'],
     },
+    
     optimization: optimization(),
   };
 };

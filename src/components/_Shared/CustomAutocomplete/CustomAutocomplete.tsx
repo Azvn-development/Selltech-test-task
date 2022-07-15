@@ -57,7 +57,7 @@ const CustomAutocomplete = <TData extends object>({
                                 column: 'NAME',
                                 operator: 'LIKE',
                                 value: value
-                              }
+                            }
                         }
                     })
                 } // if
