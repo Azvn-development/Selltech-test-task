@@ -53,7 +53,11 @@ const CustomAutocomplete = <TData extends object>({
                 if(lazyLoadInfo && value.length && reason === 'input') {
                     lazyLoadInfo.execFunction({
                         variables: {
-                            name: value
+                            where: {
+                                column: 'NAME',
+                                operator: 'LIKE',
+                                value: value
+                              }
                         }
                     })
                 } // if
