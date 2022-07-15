@@ -1,0 +1,13 @@
+.add-item-modal-fields {
+    display: flex;
+    flex-direction: column;
+    min-width: 300px;
+    row-gap: 15px;
+    width: 100%;
+
+    .add-item-modal-button {
+        margin-left: auto;
+        width: fit-content;
+    }
+}
+
