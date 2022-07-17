@@ -8,10 +8,9 @@ import { ClientModel } from '@/data/models/ClientModel';
 import CustomAutocomplete from '../_Shared/CustomAutocomplete/CustomAutocomplete';
 import { FormData, useClientForm } from './hooks/useClientForm';
 import { useClientIdOptions } from '@/hooks/opitions/useClientIdOptions';
+import { useCompanyRelationAction } from '@/api/Actions/useCompanyRelationAction';
+import { useCompanyPositionAction } from '@/api/Actions/useCompanyPositionAction';
 import styles from './ClientForm.scss';
-import { APPLICANT_INDIVIDUAL_COMPANY_RELATIONS } from '@/api/Queries/ApplicantIndividualCompanyRelationsQuery';
-import { APPLICANT_INDIVIDUAL_COMPANY_POSITION } from '@/api/Queries/ApplicantIndividualCompanyPositionsQuery';
-import { DataKey } from '@/api/DataKey';
 
 type Props = {
     handleSubmit: (data: ClientModel) => void;
@@ -24,10 +23,13 @@ export const ClientForm = ({ handleSubmit, onClose }:Props): React.ReactElement 
     const clientIds = useClientIdOptions();
     const clientEntities = useClientEntityOptions();
 
+    const companyRelationAction = useCompanyRelationAction();
+    const companyPositionAction = useCompanyPositionAction();
+
     return (
         <Grid
             container
-            component={'form'} 
+            component={'form'}
             autoComplete={'off'}
             width={600}
             gap={2}
@@ -110,10 +112,7 @@ export const ClientForm = ({ handleSubmit, onClose }:Props): React.ReactElement 
                     value={formData.relationToTheCompany}
                     onChange={onChange}
                     errors={formErrors}
-                    lazyLoadData={{
-                        query: APPLICANT_INDIVIDUAL_COMPANY_RELATIONS,
-                        dataKey: DataKey.APPLICANT_INDIVIDUAL_COMPANY_RELATIONS
-                    }}
+                    lazyLoadData={companyRelationAction}
                     needAddItem
                 />
 
@@ -124,10 +123,7 @@ export const ClientForm = ({ handleSubmit, onClose }:Props): React.ReactElement 
                     value={formData.positionInTheCompany}
                     onChange={onChange}
                     errors={formErrors}
-                    lazyLoadData={{
-                        query: APPLICANT_INDIVIDUAL_COMPANY_POSITION,
-                        dataKey: DataKey.APPLICANT_INDIVIDUAL_COMPANY_POSITION
-                    }}
+                    lazyLoadData={companyPositionAction}
                     needAddItem
                 />
             </Grid>

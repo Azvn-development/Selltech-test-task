@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
-export const APPLICANT_INDIVIDUAL_COMPANY_POSITION = gql`
-    query applicantIndividualCompanyPositions($where: QueryApplicantIndividualCompanyRelationsWhereWhereConditions) {
+export const GET_FILTERED_COMPANY_POSITIONS = gql`
+    query applicantIndividualCompanyPositions($where: QueryApplicantIndividualCompanyPositionsWhereWhereConditions) {
         applicantIndividualCompanyPositions(where:$where) {
             data {
                 id

@@ -9,16 +9,12 @@ import { useCustomAutocompleteOptions } from './hooks/useCustomAutocompleteOptio
 import { useCustomAutocompleteReset } from './hooks/useCustomAutocompleteReset';
 import { OptionType } from '@/data/types/OptionType';
 import { useCustomAutocompleteLazyLoad } from './hooks/useCustomAutocompleteLazyLoad';
-import { DocumentNode } from 'graphql';
-import { DataKey } from '@/api/DataKey';
+import { ActionType } from '@/api/ActionType';
 
 type Props<TData extends object> = {
     needAddItem?: boolean;
     options: OptionType[];
-    lazyLoadData?: {
-        dataKey: DataKey,
-        query: DocumentNode,
-    }
+    lazyLoadData?: ActionType<OptionType>
 } & InputProps<TData>;
 
 const CustomAutocomplete = <TData extends object>({
@@ -39,7 +35,7 @@ const CustomAutocomplete = <TData extends object>({
     const { needReset, reset } = useCustomAutocompleteReset();
     const { isOpen, open, close } = useCustomAutocompleteOpenHandler(id, autocompleteOptions, reset);
     const { handleAddItemSubmit } = useCustomAutocompleteAddItemSubmitHandler(addAutocompleteOption, close);
-    const lazyLoadInfo = useCustomAutocompleteLazyLoad(setAutocompleteOptions, lazyLoadData?.dataKey, lazyLoadData?.query);
+    const lazyLoadInfo = useCustomAutocompleteLazyLoad(setAutocompleteOptions, lazyLoadData);
 
     return (
         <Autocomplete
@@ -47,19 +43,17 @@ const CustomAutocomplete = <TData extends object>({
             key={Number(needReset)}
             open={isOpen}
             loading={lazyLoadInfo?.loading}
-            onOpen={open}
+            onOpen={() => {
+                open();
+
+                if(lazyLoadInfo) {
+                    lazyLoadInfo?.execFunction()
+                } // if
+            }}
             onClose={close}
             onInputChange={(_e, value, reason) => {
-                if(lazyLoadInfo && value.length && reason === 'input') {
-                    lazyLoadInfo.execFunction({
-                        variables: {
-                            where: {
-                                column: 'NAME',
-                                operator: 'LIKE',
-                                value: value
-                            }
-                        }
-                    })
+                if(lazyLoadInfo && reason === 'input') {
+                    lazyLoadInfo.execFunction(value);
                 } // if
             }}
             clearOnBlur={false}

@@ -1,15 +1,15 @@
+import { ActionType } from '@/api/ActionType';
 import { OptionType } from '@/data/types/OptionType';
-import { DocumentNode, useLazyQuery } from '@apollo/client';
 import { useEffect } from 'react';
 
-export const useCustomAutocompleteLazyLoad = (setAutocompleteOptions: (options: string[]) => void, dataKey?: string, query?: DocumentNode) => {
-    if(!dataKey || !query) return null;
+export const useCustomAutocompleteLazyLoad = (setAutocompleteOptions: (options: string[]) => void, lazyLoadInfo?: ActionType<OptionType>) => {
+    if(!lazyLoadInfo) return;
 
-    const [execFunction, { data, loading, error }] = useLazyQuery(query);
+    const { execFunction, queryInfo: { data, loading, error } } = lazyLoadInfo;
 
     useEffect(() => {
-        if(data) {
-            setAutocompleteOptions(data?.[dataKey].data.map((i: OptionType) => i.name));
+        if(data) {  
+            setAutocompleteOptions(data.map((i) => i.name));
         } // if
     }, [data])
 
@@ -19,4 +19,4 @@ export const useCustomAutocompleteLazyLoad = (setAutocompleteOptions: (options: 
         execFunction,
         error
     }
-}
+} // useCompanyRelationAction
