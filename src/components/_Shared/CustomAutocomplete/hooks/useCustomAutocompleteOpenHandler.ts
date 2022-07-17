@@ -1,10 +1,11 @@
+import { OptionType } from '@/data/types/OptionType';
 import { FocusEvent, SyntheticEvent } from 'react';
 import { useCallback, useState } from 'react'
 import { CustomAutocompleteItemId } from '../utils/CustomAutocompleteItemId';
 
 export const useCustomAutocompleteOpenHandler = <TData>(
     id: keyof TData,
-    options: string[],
+    options: OptionType[],
     reset: () => void
 ) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -23,7 +24,7 @@ export const useCustomAutocompleteOpenHandler = <TData>(
 
             // Check selected item in input
             const target = document.getElementById(id as string) as HTMLInputElement;
-            if(target && target.value.length && !options.includes(target.value)) {
+            if(target && target.value.length && !options.find(o => o.name === target.value)) {
                 reset();
             } // if
         } // if

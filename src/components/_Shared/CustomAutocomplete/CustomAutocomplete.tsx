@@ -57,11 +57,11 @@ const CustomAutocomplete = <TData extends object>({
                 } // if
             }}
             clearOnBlur={false}
-            value={value ? value as string : null}
+            value={autocompleteOptions.find(o => o.name === value)?.name ?? null}
             onChange={(_e, value) => onChange(id, value ?? '')}
             PaperComponent={(props) => AutocompletePaper(props, { id: id as string, label, needAddItem, handleAddItemSubmit })}
             ListboxComponent={VirtualizedList}
-            options={autocompleteOptions}
+            options={autocompleteOptions.map(o => o.name)}
             noOptionsText={'There are no options. Please start typing text.'}
             renderOption={(props, option) => [props, option] as React.ReactNode}
             renderInput={(props) => (

@@ -6,12 +6,15 @@ export const useCustomAutocompleteOptions = <TData>(
     onChange: (field: keyof TData, value: string | number) => void,
     options: OptionType[]
 ) => {
-    const [autocompleteOptions, setAutocompleteOptions] = useState(options.map(o => o.name));
+    const [autocompleteOptions, setAutocompleteOptions] = useState(options);
 
     const addAutocompleteOption = useCallback((option: string) => {
-        setAutocompleteOptions(prev => [ ...prev, option ]);
+        if(!autocompleteOptions.find(o => o.name === option)) {
+            setAutocompleteOptions(prev => [ ...prev, { id: 0, name: option, isCustom: true } ]);
+        } // if
+
         onChange(id, option);
-    }, [setAutocompleteOptions, onChange]);
+    }, [autocompleteOptions, setAutocompleteOptions, onChange]);
 
     return {
         autocompleteOptions,
