@@ -17,7 +17,7 @@ const VirtualizedList = ({ children, ...other }: HTMLAttributes<HTMLElement>, re
         <div ref={ref} { ...other }>
             <VariableSizeList
                 itemData={itemData}
-                height={itemCount > 8 ? 150 : itemCount * itemSize}
+                height={itemCount > 4 ? 150 : itemCount * itemSize}
                 width={'100%'}
                 itemSize={() => itemSize}
                 ref={gridRef}
