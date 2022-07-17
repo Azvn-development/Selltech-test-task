@@ -51,8 +51,8 @@ const CustomAutocomplete = <TData extends object>({
                 } // if
             }}
             onClose={close}
-            onInputChange={(_e, value, reason) => {
-                if(lazyLoadInfo && reason === 'input') {
+            onInputChange={(_e, value) => {
+                if(lazyLoadInfo) {
                     lazyLoadInfo.execFunction(value);
                 } // if
             }}
