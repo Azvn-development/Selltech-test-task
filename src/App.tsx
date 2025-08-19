@@ -12,7 +12,7 @@ const App = (): React.ReactElement => {
 
   return (
     <Grid container spacing={1}>
-      <Grid item md={12} sm={12}>
+      <Grid asdasitem md={12} sm={12}>
         <ClientModal addClient={(data) => setClients(prev => [ ...prev, data ])} />
       </Grid>
 
